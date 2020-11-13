@@ -1,32 +1,6 @@
 /*client.c*/
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <netdb.h>
-#include <netinet/in.h>
 
-#include <pthread.h>
-
-#define PORT	4321
-#define BUFFER_SIZE 1024
-#define MYFIFO "./record_for_client"
-
-struct sockaddr_in serv_addr;
-struct hostent *host;
-int sockfd;
-int sendbytes, recvbytes, sin_size;
-int fd,fd_w;
-char buf_recv[BUFFER_SIZE];
-char buf_send[BUFFER_SIZE];
-char buf[BUFFER_SIZE];
-
-pthread_t p_send,p_recv,p_display;
+#include "header.h"
 
 void init_socket(int argc, char *argv[])//初始化客户端
 {
@@ -131,13 +105,4 @@ void create_process()//创建线程
   pthread_join(p_send,NULL);
   pthread_join(p_recv,NULL);
   pthread_join(p_display,NULL);
-}
-
-int main(int argc, char *argv[])
-{
-  init_socket(argc,argv);
-	connect_socket();
-  create_process();
-	close(sockfd);
-	exit(0);
 }
